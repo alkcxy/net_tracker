@@ -7,19 +7,23 @@ import configparser
 config = configparser.ConfigParser()
 config.read('config.ini')
 
-def ping(host):
+def ping(host, i=5):
     """
     Returns True if host (str) responds to a ping request.
     Remember that a host may not respond to a ping (ICMP) request even if the host name is valid.
     """
-
+    i = i - 1
     # Option for the number of packets as a function of
     param = '-n' if platform.system().lower() == 'windows' else '-c'
 
     # Building the command. Ex: "ping -c 1 google.com"
     command = ['ping', param, '1', host]
 
-    return 1 if subprocess.call(command) == 0 else 0
+    if subprocess.call(command) == 0:
+        return 1
+    elif i == 0:
+        return 0
+    return ping(host, i)
 
 client = Client(client_id="net_tracker")
 
