@@ -7,7 +7,7 @@ import configparser
 config = configparser.ConfigParser()
 config.read('config.ini')
 
-def ping(host, i=5):
+def ping(host, i=10):
     """
     Returns True if host (str) responds to a ping request.
     Remember that a host may not respond to a ping (ICMP) request even if the host name is valid.
