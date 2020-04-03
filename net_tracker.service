@@ -1,0 +1,13 @@
+[Unit]
+Description=Net Tracker
+After=network.target
+
+[Service]
+User=<USER>
+Restart=always
+Type=simple
+WorkingDirectory=<PATH>/net_tracker
+ExecStart=/usr/local/bin/pipenv run python3 <PATH>/net_tracker/net_tracker.py
+
+[Install]
+WantedBy=multi-user.target

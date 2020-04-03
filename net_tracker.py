@@ -32,7 +32,7 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, message):
     message = message.payload.decode()
-    publish_topic = f'net_monitor/device/{message}'
+    publish_topic = f'net_tracker/device/{message}'
     print(publish_topic)
     payload = 0
     print(message)
