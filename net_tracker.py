@@ -19,7 +19,7 @@ def ping(host, i=10):
     # Building the command. Ex: "ping -c 1 google.com"
     command = ['ping', param, '1', host]
 
-    if subprocess.call(command) == 0:
+    if subprocess.call(command, stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL) == 0:
         return 1
     elif i == 0:
         return 0
