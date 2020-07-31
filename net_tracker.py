@@ -1,11 +1,8 @@
 from paho.mqtt.client import Client
-
+import configparser
+import os
 import platform    # For getting the operating system name
 import subprocess  # For executing a shell command
-import configparser
-
-config = configparser.ConfigParser()
-config.read('config.ini')
 
 def ping(host, i=10):
     """
@@ -25,8 +22,6 @@ def ping(host, i=10):
         return 0
     return ping(host, i)
 
-client = Client(client_id="net_tracker")
-
 def on_connect(client, userdata, flags, rc):
     print("Connesso con successo")
 
@@ -41,10 +36,32 @@ def on_message(client, userdata, message):
     print(payload)
     client.publish(publish_topic, payload=payload, qos=2)
 
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+if os.environ.get('MQTT_HOST'):
+    mqtt_host = os.environ.get('MQTT_HOST')
+else:
+    mqtt_host = config['mqtt']['host']
+
+if os.environ.get('MQTT_USER'):
+    mqtt_user = os.environ.get('MQTT_USER')
+else:
+    mqtt_user = config['mqtt']['user']
+
+if os.environ.get('MQTT_PWD'):
+    mqtt_password = os.environ.get('MQTT_PWD')
+else:
+    mqtt_password = config['mqtt']['pwd']
+
+client = Client(client_id="net_tracker")
 client.on_connect = on_connect
 client.on_message = on_message
 
-client.username_pw_set(config['mqtt']['user'], password=config['mqtt']['pwd'])
-client.connect(config['mqtt']['host'])
+if mqtt_user and mqtt_password:
+    client.username_pw_set(mqtt_user, password=mqtt_password)
+
+client.connect(mqtt_host)
 client.subscribe("net_tracker/scan", qos=2)
 client.loop_forever()
