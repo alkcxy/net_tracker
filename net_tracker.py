@@ -46,7 +46,7 @@ else:
     ping_retry = 10
 
 if os.environ.get('MQTT_HOST'):
-    mqtt_host = os.environ.get('MQTT_HOST')
+    mqtt_host = int(os.environ.get('MQTT_HOST'))
 else:
     mqtt_host = config['mqtt']['host']
 
