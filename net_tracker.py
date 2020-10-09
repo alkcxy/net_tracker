@@ -41,12 +41,12 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 if os.environ.get('PING_RETRY'):
-    ping_retry = os.environ.get('PING_RETRY')
+    ping_retry = int(os.environ.get('PING_RETRY'))
 else:
     ping_retry = 10
 
 if os.environ.get('MQTT_HOST'):
-    mqtt_host = int(os.environ.get('MQTT_HOST'))
+    mqtt_host = os.environ.get('MQTT_HOST')
 else:
     mqtt_host = config['mqtt']['host']
 
