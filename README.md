@@ -11,3 +11,9 @@ under [mqtt] section you should configure the connection to your mqtt server
 host=
 user=
 pwd= 
+
+How to build a docker image for arm64
+
+```bash
+    docker buildx build --platform linux/arm64 -t alkcxy/net_tracker:0.0.2-arm64 -f Dockerfile.arm64 .
+```

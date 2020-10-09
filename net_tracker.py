@@ -4,7 +4,7 @@ import os
 import platform    # For getting the operating system name
 import subprocess  # For executing a shell command
 
-def ping(host, i=10):
+def ping(host, i):
     """
     Returns True if host (str) responds to a ping request.
     Remember that a host may not respond to a ping (ICMP) request even if the host name is valid.
@@ -32,13 +32,18 @@ def on_message(client, userdata, message):
     payload = 0
     print(message)
     if config['ips'][message]:
-        payload = ping(config['ips'][message])
+        payload = ping(config['ips'][message], ping_retry)
     print(payload)
     client.publish(publish_topic, payload=payload, qos=2)
 
 
 config = configparser.ConfigParser()
 config.read('config.ini')
+
+if os.environ.get('PING_RETRY'):
+    ping_retry = os.environ.get('PING_RETRY')
+else:
+    ping_retry = 10
 
 if os.environ.get('MQTT_HOST'):
     mqtt_host = os.environ.get('MQTT_HOST')
